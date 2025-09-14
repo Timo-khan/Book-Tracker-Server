@@ -24,6 +24,7 @@
   "homepage": "https://github.com/sammou00/final-project-template#readme",
   "description": "",
   "dependencies": {
+    "axios": "^1.11.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "chalk": "^5.3.0",
     "cross-env": "^7.0.3",
+    "nodemon": "^3.1.10",
     "prettier": "^3.0.3"
   }
 }
