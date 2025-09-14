@@ -7,8 +7,17 @@ const { favorite, toRead, haveRead } = collectionControllers;
 const router = express.Router();
 
 // routes
-router.post('/favorite', favorite);
-router.post('/toRead', toRead);
-router.post('/haveRead', haveRead);
+router.post('/favorites', favorite);
+router.post('/to-read', toRead);
+router.post('/have-read', haveRead);
+
+router.post(
+    '/favorites',
+    (req, res, next) => {
+        console.log('HIT /api/collections/favorites');
+        next();
+    },
+    favorite
+);
 
 export default router;
