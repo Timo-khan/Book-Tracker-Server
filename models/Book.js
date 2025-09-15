@@ -11,6 +11,9 @@ const bookSchema = new mongoose.Schema(
         thumbnail_url: String,
         isbn: String,
         category: String,
+        webReaderLink: String, 
+        pdfLink: String,        
+        epubLink: String 
     },
     { timestamps: true }
 );

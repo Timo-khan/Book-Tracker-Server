@@ -10,7 +10,10 @@ const favoriteSchema = new mongoose.Schema(
         description: String,
         thumbnail_url: String,
         isbn: String,
-        category: String
+        category: String,
+        webReaderLink: String, 
+        pdfLink: String,        
+        epubLink: String 
     },
     { timestamps: true }
 );
