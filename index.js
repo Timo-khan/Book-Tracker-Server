@@ -37,7 +37,7 @@ const app = express();
 // cors allow the server to accept request from different origin
 const allowedOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',')
-    : ['http://localhost:5173'];
+    : ['http://localhost:3000'];
 
 app.use(
     cors({
