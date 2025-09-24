@@ -101,7 +101,7 @@ const collectionControllers = {
         }
     },
 
-    // 🔹 DELETE endpoints
+    // DELETE endpoints
     deleteFavorite: async (req, res) => {
         try {
             const deleted = await Favorite.findOneAndDelete({
