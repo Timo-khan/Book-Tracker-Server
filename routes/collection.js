@@ -5,22 +5,28 @@ import collectionControllers from '../controllers/collection.js';
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const { favorite, toRead, haveRead, getFavorites, getToRead, getHaveRead,  deleteFavorite,
-    deleteToRead, deleteHaveRead, } = collectionControllers;
+    deleteToRead, deleteHaveRead, currentRead, getCurrentReads, deleteCurrentRead, transferToHaveRead } = collectionControllers;
 
 const router = express.Router();
 /* POST routes (add books) */
 router.post('/favorites', authMiddleware, favorite);
 router.post('/to-read', authMiddleware, toRead);
 router.post('/have-read', authMiddleware, haveRead);
+router.post("/current-reads", authMiddleware, currentRead);
 
 /* GET routes (fetch books) */
 router.get('/favorites', authMiddleware, getFavorites);
 router.get('/to-read', authMiddleware, getToRead);
 router.get('/have-read', authMiddleware, getHaveRead);
+router.get("/current-reads", authMiddleware, getCurrentReads);
 
 router.delete("/favorites/:id", authMiddleware, deleteFavorite);
 router.delete("/to-read/:id", authMiddleware, deleteToRead);
 router.delete("/have-read/:id", authMiddleware, deleteHaveRead);
+router.delete("/current-reads/:id", authMiddleware, deleteCurrentRead);
+
+// TRANSFER: Current Reads → Have Read
+router.post("/current-reads/:id/transfer", authMiddleware, transferToHaveRead);
 
 // When a user hits /api/collections/favorites:
 // authMiddleware runs → checks the JWT cookie, verifies token, loads user from DB.
