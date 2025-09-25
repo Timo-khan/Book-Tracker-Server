@@ -19,6 +19,7 @@ import userRoutes from "./routes/user.js"
 // import toReadRoutes from "./routes/collection.js";
 // import haveReadRoutes from "./routes/collection.js";
 import collectionRoutes from "./routes/collection.js"
+import recommendedRoutes from "./routes/recommended.js";
 
 // load environment variables
 dotenv.config();
@@ -66,6 +67,7 @@ app.use ("/api",userRoutes);
 // app.use("/api", toReadRoutes);
 // app.use("/api", haveReadRoutes)
 app.use("/api/collections", collectionRoutes);
+app.use("/api/recommended", recommendedRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
