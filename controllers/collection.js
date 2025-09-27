@@ -1,6 +1,7 @@
 import Favorite from '../models/favorite.js';
 import ToRead from '../models/toRead.js';
 import HaveRead from '../models/haveRead.js';
+import CurrentRead from '../models/currentRead.js';
 
 const collectionControllers = {
     // Create a new "favorite" book entry
@@ -39,11 +40,9 @@ const collectionControllers = {
             });
         } catch (err) {
             if (err.code === 11000) {
-                return res
-                    .status(400)
-                    .json({
-                        error: 'This book is already in your To-Read list.'
-                    });
+                return res.status(400).json({
+                    error: 'This book is already in your To-Read list.'
+                });
             }
             res.status(500).json({ error: err.message });
         }
@@ -63,11 +62,9 @@ const collectionControllers = {
             });
         } catch (err) {
             if (err.code === 11000) {
-                return res
-                    .status(400)
-                    .json({
-                        error: 'This book is already in your Have-Read list.'
-                    });
+                return res.status(400).json({
+                    error: 'This book is already in your Have-Read list.'
+                });
             }
             res.status(500).json({ error: err.message });
         }
@@ -101,7 +98,7 @@ const collectionControllers = {
         }
     },
 
-    // 🔹 DELETE endpoints
+    // DELETE endpoints
     deleteFavorite: async (req, res) => {
         try {
             const deleted = await Favorite.findOneAndDelete({
@@ -110,11 +107,9 @@ const collectionControllers = {
             });
 
             if (!deleted) {
-                return res
-                    .status(404)
-                    .json({
-                        error: 'Book not found in favorites or not yours.'
-                    });
+                return res.status(404).json({
+                    error: 'Book not found in favorites or not yours.'
+                });
             }
 
             res.json({
@@ -153,17 +148,106 @@ const collectionControllers = {
             });
 
             if (!deleted) {
-                return res
-                    .status(404)
-                    .json({
-                        error: 'Book not found in Have-Read or not yours.'
-                    });
+                return res.status(404).json({
+                    error: 'Book not found in Have-Read or not yours.'
+                });
             }
 
             res.json({
                 message: 'Book removed from Have-Read.',
                 book: deleted
             });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    //Add to Current Reads
+    currentRead: async (req, res) => {
+        try {
+            const book = await CurrentRead.create({
+                ...req.body,
+                user: req.user._id
+            });
+            res.status(201).json({
+                book,
+                message: 'Book added to Current Reads!'
+            });
+        } catch (err) {
+            if (err.code === 11000) {
+                return res
+                    .status(400)
+                    .json({ error: 'Already in your Current Reads.' });
+            }
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    // Get Current Reads
+    getCurrentReads: async (req, res) => {
+        try {
+            const items = await CurrentRead.find({ user: req.user._id }).sort({
+                createdAt: -1
+            });
+            res.json(items);
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    // Delete Current Read
+    deleteCurrentRead: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const deleted = await CurrentRead.findOneAndDelete({
+                _id: id,
+                user: req.user._id
+            });
+            if (!deleted)
+                return res
+                    .status(404)
+                    .json({ error: 'Book not found or not yours.' });
+            res.json({ message: 'Removed from Current Reads.', book: deleted });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    // Transfer Current Read → Have Read
+    transferToHaveRead: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const book = await CurrentRead.findOne({
+                _id: id,
+                user: req.user._id
+            });
+            if (!book)
+                return res
+                    .status(404)
+                    .json({ error: 'Book not found in Current Reads.' });
+
+            // remove from current reads
+            await CurrentRead.deleteOne({ _id: id, user: req.user._id });
+
+            // add to have-read
+            const newHaveRead = await HaveRead.create({
+                google_id: book.google_id,
+                title: book.title,
+                author: book.author,
+                publisher: book.publisher,
+                published_date: book.published_date,
+                description: book.description,
+                thumbnail_url: book.thumbnail_url,
+                isbn: book.isbn,
+                category: book.category,
+                webReaderLink: book.webReaderLink,
+                pdfLink: book.pdfLink,
+                epubLink: book.epubLink,
+                user: req.user._id
+            });
+
+            res.json({ message: 'Moved to Have Read!', book: newHaveRead });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
