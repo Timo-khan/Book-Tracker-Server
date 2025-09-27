@@ -70,7 +70,7 @@ const collectionControllers = {
         }
     },
 
-    // 🔹 GET endpoints
+    // GET endpoints
     getFavorites: async (req, res) => {
         try {
             const favorites = await Favorite.find({ user: req.user._id });
@@ -120,7 +120,7 @@ const collectionControllers = {
             res.status(500).json({ error: err.message });
         }
     },
-
+    // DELETE endpoints
     deleteToRead: async (req, res) => {
         try {
             const deleted = await ToRead.findOneAndDelete({
@@ -139,7 +139,7 @@ const collectionControllers = {
             res.status(500).json({ error: err.message });
         }
     },
-
+    // DELETE endpoints
     deleteHaveRead: async (req, res) => {
         try {
             const deleted = await HaveRead.findOneAndDelete({
