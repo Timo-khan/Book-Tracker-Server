@@ -15,9 +15,10 @@ import logger from './middleware/logger.js';
 // import routes
 import userRoutes from "./routes/user.js"
 // import booksRoutes from "./routes/books.js"; 
-import favoriteRoutes from "./routes/collection.js";
-import toReadRoutes from "./routes/collection.js";
-import haveReadRoutes from "./routes/collection.js";
+// import favoriteRoutes from "./routes/collection.js";
+// import toReadRoutes from "./routes/collection.js";
+// import haveReadRoutes from "./routes/collection.js";
+import collectionRoutes from "./routes/collection.js"
 
 // load environment variables
 dotenv.config();
@@ -36,7 +37,7 @@ const app = express();
 // cors allow the server to accept request from different origin
 const allowedOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',')
-    : ['http://localhost:5173'];
+    : ['http://localhost:3000'];
 
 app.use(
     cors({
@@ -61,9 +62,10 @@ if (process.env.NODE_ENV === 'development') {
 // use routes
 app.use ("/api",userRoutes);
 // app.use("/api", booksRoutes);
-app.use("/api", favoriteRoutes);
-app.use("/api", toReadRoutes);
-app.use("/api", haveReadRoutes)
+// app.use("/api", favoriteRoutes);
+// app.use("/api", toReadRoutes);
+// app.use("/api", haveReadRoutes)
+app.use("/api/collections", collectionRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
