@@ -17,6 +17,8 @@ import userRoutes from "./routes/user.js"
 import collectionRoutes from "./routes/collection.js"
 import recommendedRoutes from "./routes/recommended.js";
 
+
+
 // load environment variables
 dotenv.config();
 const PORT = process.env.PORT || 5003;

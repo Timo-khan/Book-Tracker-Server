@@ -59,8 +59,10 @@ const userControllers = {
 
             res.cookie('token', token, {
                 httpOnly: true,
-                sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production'
+                sameSite: 'none', // ✅ allow cross-site cookies
+                secure: true      // ✅ required when sameSite = 'none'
+                // sameSite: 'lax',
+                // secure: process.env.NODE_ENV === 'production'
             });
 
             return res.status(201).json({
@@ -103,8 +105,10 @@ const userControllers = {
 
                     res.cookie('token', token, {
                         httpOnly: true,
-                        sameSite: 'lax',
-                        secure: process.env.NODE_ENV === 'production'
+                        sameSite: 'none', // allow cross-site cookies
+                        secure: true      // required when sameSite = 'none'
+                        // sameSite: 'lax',
+                        // secure: process.env.NODE_ENV === 'production'
                     });
 
                     return res.status(200).json({
