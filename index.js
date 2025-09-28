@@ -14,10 +14,6 @@ import logger from './middleware/logger.js';
 
 // import routes
 import userRoutes from "./routes/user.js"
-// import booksRoutes from "./routes/books.js"; 
-// import favoriteRoutes from "./routes/collection.js";
-// import toReadRoutes from "./routes/collection.js";
-// import haveReadRoutes from "./routes/collection.js";
 import collectionRoutes from "./routes/collection.js"
 import recommendedRoutes from "./routes/recommended.js";
 
@@ -53,7 +49,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // serve static files
-app.use(express.static(path.join(PATH, 'dist')));
+// app.use(express.static(path.join(PATH, 'dist')));
 
 // use middlewares
 if (process.env.NODE_ENV === 'development') {
@@ -62,19 +58,15 @@ if (process.env.NODE_ENV === 'development') {
 
 // use routes
 app.use ("/api",userRoutes);
-// app.use("/api", booksRoutes);
-// app.use("/api", favoriteRoutes);
-// app.use("/api", toReadRoutes);
-// app.use("/api", haveReadRoutes)
 app.use("/api/collections", collectionRoutes);
 app.use("/api/recommended", recommendedRoutes);
 
 
-if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(PATH, 'dist', 'index.html'));
-    });
-}
+// if (process.env.NODE_ENV === 'production') {
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join(PATH, 'dist', 'index.html'));
+//     });
+// }
 
 // handle 404
 app.use('*', (req, res) => {
